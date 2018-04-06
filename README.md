@@ -16,7 +16,5 @@ To be finalized.
 6. [Generating Adversarial Malware Examples for Black-Box Attacks Based on GAN](https://arxiv.org/abs/1702.05983) W. Hu and Y. Tan, arXiv preprint arXiv:1702.05983 (2017).
 
 ## Related Repositories
-#### cleverhans
-https://github.com/tensorflow/cleverhans
-#### APE-GAN
-https://github.com/shenqixiaojiang/APE-GAN
+1. [cleverhans](https://github.com/tensorflow/cleverhans)
+2. [APE-GAN](https://github.com/shenqixiaojiang/APE-GAN)
