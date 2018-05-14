@@ -10,7 +10,7 @@ from keras_contrib.layers.normalization import InstanceNormalization
 from keras.layers import Input, ZeroPadding2D, Convolution2D, LeakyReLU, Flatten, Dense
 from keras_contrib.layers.normalization import InstanceNormalization
 from keras.models import Model
-from Losses import Custom_MSE, Adv, Custom_Hinge
+from Losses import MSE, Adv, Hinge
 from keras.layers import Input, Add
 from keras.models import Model
 from keras.optimizers import adam
@@ -20,20 +20,20 @@ import keras
 def GAN(input_shape, classifier_name, alpha, beta):
     G = generator(input_shape)
     D = discriminator(input_shape)
-    f = keras.models.load('./models/classifier-' + classifier_name + '.h5')
-    x_inp = Input(input_shape)
-    perturb = G(x_inp)
-    x_perturbed = Add()([x_inp, perturb])
+    F = keras.models.load_model('./models/Classifier-' + classifier_name + '.h5')
+    ipt = Input(input_shape)
+    perturbation = G(ipt)
+    adversary = Add()([ipt, perturbation])
+    D.trainable = False
+    F.trainable = False
+    judge = D(adversary)
+    scores = F(adversary)
 
-    Discrim_Output = D(x_perturbed)
-    Class_Output = f(x_perturbed)
-
-    GAN = Model(x_inp, [Discrim_Output, Class_Output, perturb])
+    GAN = Model(ipt, [judge, scores, perturbation])
     GAN.compile(optimizer=adam(lr=0.001),
-                loss=[Custom_MSE, Adv, Custom_Hinge(0.3)],
+                loss=[MSE, Adv, Hinge(0.1)],
                 loss_weights=[1, alpha, beta])
-
-    return GAN, G, D, f
+    return GAN, G, D, F
 
 
 def classifier(model_name):
