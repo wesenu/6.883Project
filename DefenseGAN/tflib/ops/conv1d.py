@@ -8,7 +8,9 @@ def enable_default_weightnorm():
     global _default_weightnorm
     _default_weightnorm = True
 
-def Conv1D(name, input_dim, output_dim, filter_size, inputs, he_init=True, mask_type=None, stride=1, weightnorm=None, biases=True, gain=1.):
+def Conv1D(name, input_dim, output_dim, filter_size, inputs, he_init=True,
+           mask_type=None, stride=1, weightnorm=None, biases=True, gain=1.,
+           data_format='NHWC'):
     """
     inputs: tensor of shape (batch size, num channels, width)
     mask_type: one of None, 'a', 'b'
@@ -31,8 +33,8 @@ def Conv1D(name, input_dim, output_dim, filter_size, inputs, he_init=True, mask_
             mask[center+1:, :, :] = 0.
 
             # Mask out future channels
-            for i in range(mask_n_channels):
-                for j in range(mask_n_channels):
+            for i in xrange(mask_n_channels):
+                for j in xrange(mask_n_channels):
                     if (mask_type=='a' and i >= j) or (mask_type=='b' and i > j):
                         mask[
                             center,
@@ -90,7 +92,7 @@ def Conv1D(name, input_dim, output_dim, filter_size, inputs, he_init=True, mask_
             filters=filters, 
             stride=stride,
             padding='SAME',
-            data_format='NCHW'
+            data_format=data_format
         )
 
         if biases:
@@ -102,7 +104,7 @@ def Conv1D(name, input_dim, output_dim, filter_size, inputs, he_init=True, mask_
             # result = result + _biases
 
             result = tf.expand_dims(result, 3)
-            result = tf.nn.bias_add(result, _biases, data_format='NCHW')
+            result = tf.nn.bias_add(result, _biases, data_format=data_format)
             result = tf.squeeze(result)
 
         return result

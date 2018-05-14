@@ -1,6 +1,5 @@
 import numpy as np
 import tensorflow as tf
-
 import locale
 
 locale.setlocale(locale.LC_ALL, '')
@@ -34,13 +33,13 @@ def param(name, *args, **kwargs):
     return result
 
 def params_with_name(name):
-    return [p for n,p in list(_params.items()) if name in n]
+    return [p for n,p in _params.items() if name in n]
 
 def delete_all_params():
     _params.clear()
 
 def alias_params(replace_dict):
-    for old,new in list(replace_dict.items()):
+    for old,new in replace_dict.items():
         # print "aliasing {} to {}".format(old,new)
         _param_aliases[old] = new
 
@@ -50,7 +49,7 @@ def delete_param_aliases():
 # def search(node, critereon):
 #     """
 #     Traverse the Theano graph starting at `node` and return a list of all nodes
-#     which match the `critereon` function. When optimizing a cost function, you 
+#     which match the `critereon` function. When optimizing a cost function, you
 #     can use this to get a list of all of the trainable params in the graph, like
 #     so:
 
@@ -99,16 +98,16 @@ def delete_param_aliases():
 #     )
 
 def print_model_settings(locals_):
-    print("Uppercase local vars:")
-    all_vars = [(k,v) for (k,v) in list(locals_.items()) if (k.isupper() and k!='T' and k!='SETTINGS' and k!='ALL_SETTINGS')]
+    print "Uppercase local vars:"
+    all_vars = [(k,v) for (k,v) in locals_.items() if (k.isupper() and k!='T' and k!='SETTINGS' and k!='ALL_SETTINGS')]
     all_vars = sorted(all_vars, key=lambda x: x[0])
     for var_name, var_value in all_vars:
-        print("\t{}: {}".format(var_name, var_value))
+        print "\t{}: {}".format(var_name, var_value)
 
 
 def print_model_settings_dict(settings):
-    print("Settings dict:")
-    all_vars = [(k,v) for (k,v) in list(settings.items())]
+    print "Settings dict:"
+    all_vars = [(k,v) for (k,v) in settings.items()]
     all_vars = sorted(all_vars, key=lambda x: x[0])
     for var_name, var_value in all_vars:
-        print("\t{}: {}".format(var_name, var_value))
+        print "\t{}: {}".format(var_name, var_value)
