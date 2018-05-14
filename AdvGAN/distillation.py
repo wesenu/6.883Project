@@ -18,8 +18,6 @@ from Generator import Define_Generator
 from Discriminator import Define_Discriminator
 from Distilled import Define_Distilled
 
-import layers
-
 x_train, x_test, y_test, y_train = [], [], [], []
 
 
