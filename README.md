@@ -1,8 +1,16 @@
 # 6.883Project
 6.883 Spring 2018 Project Repository
 
-## Proposal
-[Final Propoal](https://github.com/johnding1996/6.883Project/blob/master/docs/proposal.pdf)
+## Papers
+#### Finished
+ - [Propoal](https://github.com/johnding1996/6.883Project/blob/master/docs/proposal.pdf)
+ - [Mid-Porject](https://github.com/johnding1996/6.883Project/blob/master/docs/midproject.pdf)
+ - [Final-Porject](https://github.com/johnding1996/6.883Project/blob/master/docs/finalproject.pdf)
+
+#### ShareLatex (readonly)
+ - [Propoal](https://www.sharelatex.com/read/cpnytmwmcfjs)
+ - [Mid-Porject](https://www.sharelatex.com/read/xmkkbgjqsqzr)
+ - [Final-Porject](https://www.sharelatex.com/read/ygtrykqqgtcq)
 
 ## Reference Papers
 ### Core
@@ -22,6 +30,6 @@ arXiv preprint arXiv:1706.06083, 2017.
 8. [Provably Minimally Distorted Adversarial Examples](https://arxiv.org/abs/1709.10207) N. Carlini, G. Katz, C. Barrett, and D. L. Dill, arXiv preprint arXiv:1709.10207 (2017).
 
 ## Related Repositories
-1. [cleverhans](https://github.com/tensorflow/cleverhans)
-2. [APE-GAN](https://github.com/shenqixiaojiang/APE-GAN)
-3. [defense-gan](https://github.com/anishathalye/obfuscated-gradients/tree/master/defensegan)
+ - [cleverhans](https://github.com/tensorflow/cleverhans)
+ - [APE-GAN](https://github.com/shenqixiaojiang/APE-GAN)
+ - [defense-gan](https://github.com/anishathalye/obfuscated-gradients/tree/master/defensegan)
