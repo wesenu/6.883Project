@@ -17,7 +17,7 @@ from keras.optimizers import adam
 import keras
 
 
-def GAN(input_shape, classifier_name, alpha, beta):
+def GAN(input_shape, classifier_name, lr, alpha, beta):
     G = generator(input_shape)
     D = discriminator(input_shape)
     F = keras.models.load_model('./models/Classifier-' + classifier_name + '.h5')
@@ -30,8 +30,8 @@ def GAN(input_shape, classifier_name, alpha, beta):
     scores = F(adversary)
 
     GAN = Model(ipt, [judge, scores, perturbation])
-    GAN.compile(optimizer=adam(lr=0.001),
-                loss=[MSE, Adv, Hinge(0.1)],
+    GAN.compile(optimizer=adam(lr=lr),
+                loss=[MSE, Adv, Hinge(0.3)],
                 loss_weights=[1, alpha, beta])
     return GAN, G, D, F
 
