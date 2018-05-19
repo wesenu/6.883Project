@@ -545,12 +545,12 @@ def blackbox(gan, rec_data_path=None, batch_size=128,
     
 
     if FLAGS.debug and gan is not None:  # To see some qualitative results.
-        batch_size = 500
+        batch_size = 200
         print("elimination")
-        x_rec_orig = gan.reconstruct(images_tensor, batch_size=batch_size,reconstructor_id=4)
+        x_rec_orig = gan.reconstruct(images_tensor, batch_size=batch_size,reconstructor_id=i+3)
         for i in [2]:
             WB_B_t_adv = np.load('../AdvGAN/samples/WB-B-t'+str(i)+'-adv.npy')
-            length = WB_B_t_adv.shape[0]
+            length = WB_B_t_adv[1000].shape[0]
             print(i)
             for j in range(length // batch_size):
             
@@ -560,13 +560,11 @@ def blackbox(gan, rec_data_path=None, batch_size=128,
                     feed_dict={
                         images_tensor: WB_B_t_adv[j*batch_size:j*batch_size+batch_size],
                         K.learning_phase(): 0})
-                if j==0:
-                    x_rec_orig_val=x_rec_orig_val_[:]
-                else:
-                    x_rec_orig_val = np.concatenate((x_rec_orig_val,x_rec_orig_val_),axis=0)
+            
+                x_rec_orig_val = np.concatenate((x_rec_orig_val,x_rec_orig_val_),axis=0)
                 print("shape:",x_rec_orig_val.shape)
                 
-            np.savez_compressed('results/reconstruct/WB-B-t'+str(i)+'-adv-defensegan-'+str(length), x_rec_orig_val)
+            np.savez_compressed('results/reconstruct/WB-B-t'+str(i)+'-adv-defensegan-'+str(1000), x_rec_orig_val)
             #np.savez_compressed('test1.npy', x_rec_orig_val)
         #i = 1
         #WB_B_t_adv = np.load('../AdvGAN/samples/WB-B-t'+str(i)+'-adv.npy')
