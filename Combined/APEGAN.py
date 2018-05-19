@@ -6,6 +6,9 @@ from keras.optimizers import Adam
 from keras import backend as K
 
 
+def SRMSE(y_true, y_pred):
+    return K.sqrt(K.mean(K.square(y_pred - y_true), axis=-1) + 1e-10)
+
 def APEGAN(input_shape):
     G = generator(input_shape)
     D = discriminator(input_shape)
@@ -16,8 +19,8 @@ def APEGAN(input_shape):
     
     GAN = Model(ipt, [judge, purified])
     GAN.compile(optimizer='adam',
-                loss=['mse', 'mse'],
-                loss_weights=[0.3, 0.7])
+                loss=['binary_crossentropy', SRMSE],
+                loss_weights=[0.02, 0.9])
     return GAN, G, D
 
 
@@ -51,5 +54,5 @@ def discriminator(input_shape):
     model.add(Flatten())
     model.add(Dense(1))
     model.add(Activation('sigmoid'))
-    model.compile(optimizer='adam', loss='mse')
+    model.compile(optimizer='adam', loss='binary_crossentropy')
     return model
