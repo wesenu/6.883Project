@@ -39,7 +39,27 @@ def AdvGAN(input_shape, classifier_name, alpha, beta):
 
     GAN = Model(ipt, [judge, scores, perturbation])
     GAN.compile(optimizer='adam',
-                loss=[MSE, Adv, Hinge(0.3)],
+                loss=[MSE, Adv, Hinge(0.3/255)],
+                loss_weights=[1, alpha, beta])
+    return GAN, G, D, F
+
+def AdvGAN_APEGANClassifier(input_shape, classifier_name, alpha, beta):
+    G = generator(input_shape)
+    D = discriminator(input_shape)
+    F = keras.models.load_model('./models/Classifier-' + classifier_name + '.h5')
+    APEG = keras.models.load_model('./models/APEGAN-AdvGANAllTarget-G.h5')
+    ipt = Input(input_shape)
+    perturbation = G(ipt)
+    adversary = Add()([ipt, perturbation])
+    D.trainable = False
+    APEG.trainable = False
+    F.trainable = False
+    judge = D(adversary)
+    scores = F(APEG(adversary))
+
+    GAN = Model(ipt, [judge, scores, perturbation])
+    GAN.compile(optimizer='adam',
+                loss=[MSE, Adv, Hinge(0.3/255)],
                 loss_weights=[1, alpha, beta])
     return GAN, G, D, F
 
