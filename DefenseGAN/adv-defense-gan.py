@@ -547,11 +547,12 @@ def blackbox(gan, rec_data_path=None, batch_size=128,
     if FLAGS.debug and gan is not None:  # To see some qualitative results.
         batch_size = 500
         print("elimination")
-        x_rec_orig = gan.reconstruct(images_tensor, batch_size=batch_size,reconstructor_id=i+3)
+        x_rec_orig = gan.reconstruct(images_tensor, batch_size=batch_size,reconstructor_id=4)
         for i in range(10):
             rec_t = np.load('../APEGAN/reconstruct/rec_t'+str(i)+'.npy')
-            length = rec_t[5000].shape[0]
+            length = rec_t[:5000].shape[0]
             print(i)
+            x_rec_orig_val = []
             for j in range(length // batch_size):
                 sess.run(tf.local_variables_initializer())
                 x_rec_orig_val_ = sess.run(
@@ -559,10 +560,11 @@ def blackbox(gan, rec_data_path=None, batch_size=128,
                     feed_dict={
                         images_tensor: rec_t[j*batch_size:j*batch_size+batch_size],
                         K.learning_phase(): 0})
-            
-                x_rec_orig_val = np.concatenate((x_rec_orig_val,x_rec_orig_val_),axis=0)
+                if j==0:
+                    x_rec_orig_val=x_rec_orig_val_[:]
+                else:
+                    x_rec_orig_val = np.concatenate((x_rec_orig_val,x_rec_orig_val_),axis=0)
                 print("shape:",x_rec_orig_val.shape)
-                
             np.savez_compressed('results/reconstruct/rec_t'+str(i)+'-adv-defensegan-'+str(5000), x_rec_orig_val)
             #np.savez_compressed('test1.npy', x_rec_orig_val)
         #i = 1
