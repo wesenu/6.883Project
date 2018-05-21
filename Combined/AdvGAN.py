@@ -43,7 +43,7 @@ def AdvGAN(input_shape, classifier_name, alpha, beta):
                 loss_weights=[1, alpha, beta])
     return GAN, G, D, F
 
-def AdvGAN_APEGANClassifier(input_shape, classifier_name, alpha, beta):
+def AdvGAN_APEGANClassifier(input_shape, classifier_name, alpha1, alpha2, beta):
     G = generator(input_shape)
     D = discriminator(input_shape)
     F = keras.models.load_model('./models/Classifier-' + classifier_name + '.h5')
@@ -55,13 +55,14 @@ def AdvGAN_APEGANClassifier(input_shape, classifier_name, alpha, beta):
     APEG.trainable = False
     F.trainable = False
     judge = D(adversary)
-    scores = F(APEG(adversary))
+    scores1 = F(adversary)
+    scores2 = F(APEG(adversary))
 
-    GAN = Model(ipt, [judge, scores, perturbation])
+    GAN = Model(ipt, [judge, scores1, scores2, perturbation])
     GAN.compile(optimizer='adam',
-                loss=[MSE, Adv, Hinge(0.3/255)],
-                loss_weights=[1, alpha, beta])
-    return GAN, G, D, F
+                loss=[MSE, Adv, Adv, Hinge(0.3/255)],
+                loss_weights=[1, alpha1, alpha2, beta])
+    return GAN, G, D, APEG, F
 
 
 def generator(input_shape=[28,28,1]):

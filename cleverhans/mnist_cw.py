@@ -178,7 +178,7 @@ def mnist_tutorial_cw(train_start=0, train_end=60000, test_start=0,
     
         print(adv_test.shape)
     
-    np.savez_compressed('adv-cw-test', x=adv_test,y=Y_test)
+    np.savez_compressed('adv-cw-test', clean=X_test, adv=adv_test, label=Y_test)
     print("saved")
 
     
@@ -194,7 +194,7 @@ def mnist_tutorial_cw(train_start=0, train_end=60000, test_start=0,
     
         print(adv_train.shape)
     
-    np.savez_compressed('adv-cw-train', x=adv_train,y=Y_train)
+    np.savez_compressed('adv-cw-train', clean=X_train, adv=adv_train, label=Y_train)
     print("saved")
     
     
@@ -259,14 +259,14 @@ def main(argv=None):
 
 if __name__ == '__main__':
     flags.DEFINE_boolean('viz_enabled', False, 'Visualize adversarial ex.')
-    flags.DEFINE_integer('nb_epochs', 6, 'Number of epochs to train model')
+    flags.DEFINE_integer('nb_epochs', 8, 'Number of epochs to train model')
     flags.DEFINE_integer('batch_size', 128, 'Size of training batches')
     flags.DEFINE_integer('nb_classes', 10, 'Number of output classes')
     flags.DEFINE_integer('source_samples', 10, 'Nb of test inputs to attack')
     flags.DEFINE_float('learning_rate', 0.001, 'Learning rate for training')
     flags.DEFINE_string('model_path', os.path.join("models", "mnist"),
                         'Path to save or load the model file')
-    flags.DEFINE_integer('attack_iterations', 100,
+    flags.DEFINE_integer('attack_iterations', 1000,
                          'Number of iterations to run attack; 1000 is good')
     flags.DEFINE_boolean('targeted', True,
                          'Run the tutorial in targeted mode?')
