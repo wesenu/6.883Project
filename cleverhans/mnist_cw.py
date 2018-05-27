@@ -70,7 +70,10 @@ def mnist_tutorial_cw(train_start=0, train_end=60000, test_start=0,
                                                   train_end=train_end,
                                                   test_start=test_start,
                                                   test_end=test_end)
-
+    
+    np.savez_compressed('adv-cw-original', x=X_train,y=Y_train)
+    return
+    
     # Define input TF placeholder
     x = tf.placeholder(tf.float32, shape=(None, img_rows, img_cols, channels))
     y = tf.placeholder(tf.float32, shape=(None, nb_classes))

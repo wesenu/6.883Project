@@ -816,3 +816,4 @@ if __name__ == '__main__':
 
     main_cfg = lambda x: main(cfg, x)
     tf.app.run(main=main_cfg)
+
